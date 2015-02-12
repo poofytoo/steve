@@ -5,7 +5,7 @@
 
 var gameObj = gameObj || {};
 
-gameObj.game = new Phaser.Game(160, 160, Phaser.AUTO, '');
+gameObj.game = new Phaser.Game(320, 320, Phaser.AUTO, '');
 
 console.log('adding boot');
 gameObj.game.state.add('Boot', gameObj.Boot);

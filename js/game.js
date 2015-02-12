@@ -8,16 +8,16 @@ gameObj.Game.prototype = {
     
     //create layer
     //this.backgroundlayer = this.map.createLayer('backgroundLayer');
-    this.blockedLayer = this.map.createLayer('Base');
-    this.backgroundlayer = this.map.createLayer('Front');
+    this.base = this.map.createLayer('Base');
 
-    this.blockedLayer.resizeWorld();
+    this.base.resizeWorld();
     // this.map.setCollisionBetween(1, 2000, true, 'blockedLayer');
 
     // this.backgroundlayer.resizeWorld();
 
     this.state = {
-      velocity: 128,
+      debounce: 32,
+      velocity: 256,
       step: 32,
       moving: false,
       direction: null,
@@ -31,11 +31,16 @@ gameObj.Game.prototype = {
     this.player = this.game.add.sprite(result[0].x, result[0].y, 'steve');
     this.game.physics.arcade.enable(this.player);
 
-    //the camera will follow the player in the world
-    this.game.camera.follow(this.player);
+    this.player.anchor.setTo(0.5,0.5)
+    this.player.scale.x = -1;
+    this.player.position.setTo(this.player.position.x + 16,this.player.position.y + 16);
 
+    this.game.camera.follow(this.player);
     //move player with cursor keys
+
     this.cursors = this.game.input.keyboard.createCursorKeys();
+
+    this.front = this.map.createLayer('Front');
   },
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
   findObjectsByType: function(type, map, layer) {
@@ -51,6 +56,8 @@ gameObj.Game.prototype = {
     });
     return result;
   },
+  
+  /*
   //create a sprite from an object
   createFromTiledObject: function(element, group) {
     var sprite = group.create(element.x, element.y, element.properties.sprite);
@@ -59,6 +66,8 @@ gameObj.Game.prototype = {
         sprite[key] = element.properties[key];
       });
   },
+  */
+
   update: function() {
     this.game.physics.arcade.collide(this.player, this.blockedLayer);
     if (this.state.moving) {
@@ -80,28 +89,36 @@ gameObj.Game.prototype = {
         }
       }
     }
+
     this.player.body.velocity.y = 0;
     this.player.body.velocity.x = 0;
+    
     if (this.cursors.up.isDown) {
       this.state.moving = true;
       this.state.direction = 'up';
       this.state.next = this.player.body.y - this.state.step;
       this.player.body.velocity.y -= this.state.velocity;
+
     } else if (this.cursors.down.isDown) {
       this.state.moving = true;
       this.state.direction = 'down';
       this.state.next = this.player.body.y + this.state.step;
       this.player.body.velocity.y += this.state.velocity;
+
     } else if (this.cursors.left.isDown) {
       this.state.moving = true;
       this.state.direction = 'left';
       this.state.next = this.player.body.x - this.state.step;
       this.player.body.velocity.x -= this.state.velocity;
+      this.player.scale.x = 1;
+
     } else if (this.cursors.right.isDown) {
       this.state.moving = true;
       this.state.direction = 'right';
       this.state.next = this.player.body.x + this.state.step;
       this.player.body.velocity.x += this.state.velocity;
+      this.player.scale.x = -1;
+
     }
   }
 }
