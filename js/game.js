@@ -9,7 +9,8 @@ gameObj.Game.prototype = {
     //create layer
     //this.backgroundlayer = this.map.createLayer('backgroundLayer');
     this.base = this.map.createLayer('Base');
-    console.log(this.map.getTile(1,1,'Base'))
+    console.log(this.map.getTile(3,3,'Base').index)
+    console.log(this.map);
     this.base.resizeWorld();
     // this.map.setCollisionBetween(1, 2000, true, 'blockedLayer');
     // this.backgroundlayer.resizeWorld();
@@ -59,6 +60,15 @@ gameObj.Game.prototype = {
     return result;
   },
   
+  /**
+  * Takes in the world coordinates and outputs the 
+  * 
+  * @return Phaser.Tile Object
+  */
+  findTileByWorldCoords: function(worldX, worldY, map, layer) {
+    return map.getTile(Math.round(worldX/map.tileWidth),Math.round(worldY/map.tileHeight),layer);
+  },
+
   /*
   //create a sprite from an object
   createFromTiledObject: function(element, group) {
@@ -87,6 +97,8 @@ gameObj.Game.prototype = {
             this.player.body.y = next - this.state.verticalOffset; break;
           case 'left':
           case 'right':
+            console.log(this.findTileByWorldCoords(this.player.body.x, this.player.body.y, this.map, 'Base').index)
+
             var next = Math.floor(Math.round(this.state.next + this.state.horizontalOffset) / this.state.step) * this.state.step;
             this.player.body.x = next - this.state.horizontalOffset; break;
         }
