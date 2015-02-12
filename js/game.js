@@ -14,18 +14,19 @@ gameObj.Game.prototype = {
     this.blockedLayer.resizeWorld();
     // this.map.setCollisionBetween(1, 2000, true, 'blockedLayer');
 
-    this.backgroundlayer.resizeWorld();
+    // this.backgroundlayer.resizeWorld();
 
     this.state = {
       moving: false,
       direction: null,
-      step: 0
+      next: null,
+      direction: null
     }
      //create player
-    var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
+    var result = this.findObjectsByType('steveStart', this.map, 'objectsLayer')
 
     //we know there is just one result
-    this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
+    this.player = this.game.add.sprite(result[0].x, result[0].y, 'steve');
     this.game.physics.arcade.enable(this.player);
 
     //the camera will follow the player in the world
@@ -58,31 +59,48 @@ gameObj.Game.prototype = {
   },
   update: function() {
     this.game.physics.arcade.collide(this.player, this.blockedLayer);
-    var slot = 10;
-    if (this.state.moving && this.state.step < slot) {
-      this.state.step++;
-      return;
-    } else if (this.state.moving && this.state.step >= slot) {
-      this.state.moving = false;
+    if (this.state.moving) {
+      if (this.state.direction === 'up' && this.player.body.y >= this.state.next ||
+          this.state.direction === 'down' && this.player.body.y <= this.state.next ||
+          this.state.direction === 'left' && this.player.body.x >= this.state.next ||
+          this.state.direction === 'right' && this.player.body.x <= this.state.next) {
+        return;
+      } else {
+        this.state.moving = false;
+        switch(this.state.direction) {
+          case 'up':
+          case 'down':
+            this.player.body.y = this.state.next; break;
+          case 'left':
+          case 'down':
+            this.player.body.x = this.state.next; break;
+        }
+      }
     }
+    console.log(this.player.body.x, this.player.body.y);
     this.player.body.velocity.y = 0;
     this.player.body.velocity.x = 0;
-    var velocity = 100;
+    var velocity = 128;
+    var step = 32;
     if (this.cursors.up.isDown) {
       this.state.moving = true;
-      this.state.step = 0;
+      this.state.direction = 'up';
+      this.state.next = this.player.body.y - step;
       this.player.body.velocity.y -= velocity;
     } else if (this.cursors.down.isDown) {
       this.state.moving = true;
-      this.state.step = 0;
+      this.state.direction = 'down';
+      this.state.next = this.player.body.y + step;
       this.player.body.velocity.y += velocity;
     } else if (this.cursors.left.isDown) {
       this.state.moving = true;
-      this.state.step = 0;
+      this.state.direction = 'left';
+      this.state.next = this.player.body.x - step;
       this.player.body.velocity.x -= velocity;
     } else if (this.cursors.right.isDown) {
       this.state.moving = true;
-      this.state.step = 0;
+      this.state.direction = 'right';
+      this.state.next = this.player.body.x + step;
       this.player.body.velocity.x += velocity;
     }
   }
