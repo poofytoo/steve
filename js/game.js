@@ -17,6 +17,8 @@ gameObj.Game.prototype = {
     // this.backgroundlayer.resizeWorld();
 
     this.state = {
+      velocity: 128,
+      step: 32,
       moving: false,
       direction: null,
       next: null,
@@ -67,41 +69,39 @@ gameObj.Game.prototype = {
         return;
       } else {
         this.state.moving = false;
+        var next = Math.floor(Math.round(this.state.next) / this.state.step) * this.state.step;
         switch(this.state.direction) {
           case 'up':
           case 'down':
-            this.player.body.y = this.state.next; break;
+            this.player.body.y = next; break;
           case 'left':
-          case 'down':
-            this.player.body.x = this.state.next; break;
+          case 'right':
+            this.player.body.x = next; break;
         }
       }
     }
-    console.log(this.player.body.x, this.player.body.y);
     this.player.body.velocity.y = 0;
     this.player.body.velocity.x = 0;
-    var velocity = 128;
-    var step = 32;
     if (this.cursors.up.isDown) {
       this.state.moving = true;
       this.state.direction = 'up';
-      this.state.next = this.player.body.y - step;
-      this.player.body.velocity.y -= velocity;
+      this.state.next = this.player.body.y - this.state.step;
+      this.player.body.velocity.y -= this.state.velocity;
     } else if (this.cursors.down.isDown) {
       this.state.moving = true;
       this.state.direction = 'down';
-      this.state.next = this.player.body.y + step;
-      this.player.body.velocity.y += velocity;
+      this.state.next = this.player.body.y + this.state.step;
+      this.player.body.velocity.y += this.state.velocity;
     } else if (this.cursors.left.isDown) {
       this.state.moving = true;
       this.state.direction = 'left';
-      this.state.next = this.player.body.x - step;
-      this.player.body.velocity.x -= velocity;
+      this.state.next = this.player.body.x - this.state.step;
+      this.player.body.velocity.x -= this.state.velocity;
     } else if (this.cursors.right.isDown) {
       this.state.moving = true;
       this.state.direction = 'right';
-      this.state.next = this.player.body.x + step;
-      this.player.body.velocity.x += velocity;
+      this.state.next = this.player.body.x + this.state.step;
+      this.player.body.velocity.x += this.state.velocity;
     }
   }
 }
