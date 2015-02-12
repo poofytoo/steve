@@ -42,22 +42,6 @@
                  "width":32,
                  "x":64,
                  "y":64
-                }, 
-                {
-                 "ellipse":true,
-                 "height":0,
-                 "id":30,
-                 "name":"",
-                 "properties":
-                    {
-
-                    },
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":457,
-                 "y":148
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -66,7 +50,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":31,
+ "nextobjectid":32,
  "orientation":"orthogonal",
  "properties":
     {
