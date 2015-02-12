@@ -15,6 +15,8 @@ gameObj.Game.prototype = {
     // this.backgroundlayer.resizeWorld();
 
     this.state = {
+      verticalOffset: 12,
+      horizontalOffset: 4,
       velocity: 200,
       step: 32,
       moving: false,
@@ -78,38 +80,21 @@ gameObj.Game.prototype = {
         return;
       } else {
         this.state.moving = false;
-        var next = Math.floor(Math.round(this.state.next) / this.state.step) * this.state.step;
         switch(this.state.direction) {
           case 'up':
           case 'down':
-            this.player.body.y = next; break;
+            var next = Math.floor(Math.round(this.state.next + this.state.verticalOffset) / this.state.step) * this.state.step;
+            this.player.body.y = next - this.state.verticalOffset; break;
           case 'left':
           case 'right':
-            this.player.body.x = next; break;
+            var next = Math.floor(Math.round(this.state.next + this.state.horizontalOffset) / this.state.step) * this.state.step;
+            this.player.body.x = next - this.state.horizontalOffset; break;
         }
       }
     }
 
     this.player.body.velocity.y = 0;
     this.player.body.velocity.x = 0;
-
-/*
-    if (this.state.moved) {
-      this.state.debounceTimer --;
-      if (this.state.debounceTimer > 0) {
-        return;
-      }
-
-      // TODO: There's probably a better way of checking for this
-      if (!this.cursors.up.isDown &&
-          !this.cursors.down.isDown &&
-          !this.cursors.left.isDown &&
-          !this.cursors.right.isDown) {
-        console.log('released keys')
-        this.state.moved = false;
-      }
-    }
-*/
 
     // TODO: Should be switched to event listeners
 
