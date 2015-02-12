@@ -1,8 +1,7 @@
 /**
-
-Main.js
-
-**/
+* This is where the game begins
+*
+*/
 
 var gameObj = gameObj || {};
 

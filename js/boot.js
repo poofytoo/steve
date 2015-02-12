@@ -17,7 +17,6 @@ gameObj.Boot.prototype = {
     this.scale.setScreenSize(true);
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     
-    console.log('Starting Preload...');
     this.state.start('Preload');
   }
 };
