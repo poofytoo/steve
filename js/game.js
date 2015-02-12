@@ -9,7 +9,7 @@ gameObj.Game.prototype = {
     //create layer
     //this.backgroundlayer = this.map.createLayer('backgroundLayer');
     this.base = this.map.createLayer('Base');
-
+    console.log(this.map.getTile(1,1,'Base'))
     this.base.resizeWorld();
     // this.map.setCollisionBetween(1, 2000, true, 'blockedLayer');
     // this.backgroundlayer.resizeWorld();
@@ -40,7 +40,7 @@ gameObj.Game.prototype = {
 
     // Add foreground
     this.front = this.map.createLayer('Front');
-    
+
   },
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
   findObjectsByType: function(type, map, layer) {
@@ -144,6 +144,7 @@ gameObj.Game.prototype = {
       this.player.animations.play('run', 15, true);
 
     } else {
+      // TODO: Fix landing on non-first-frame
       // Setting TRUE should return to frame 1 when stopped
       this.player.animations.stop(true);
     }
