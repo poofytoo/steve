@@ -8,7 +8,8 @@ gameObj.Game.prototype = {
     
     //create layer
     //this.backgroundlayer = this.map.createLayer('backgroundLayer');
-    this.blockedLayer = this.map.createLayer('Tile Layer 1');
+    this.blockedLayer = this.map.createLayer('Base');
+    this.backgroundlayer = this.map.createLayer('Front');
 
     this.blockedLayer.resizeWorld();
   }
