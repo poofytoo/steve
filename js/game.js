@@ -9,8 +9,6 @@ gameObj.Game.prototype = {
     //create layer
     //this.backgroundlayer = this.map.createLayer('backgroundLayer');
     this.base = this.map.createLayer('Base');
-    console.log(this.map.getTile(3,3,'Base').index)
-    console.log(this.map);
     this.base.resizeWorld();
     // this.map.setCollisionBetween(1, 2000, true, 'blockedLayer');
     // this.backgroundlayer.resizeWorld();
@@ -25,6 +23,15 @@ gameObj.Game.prototype = {
       next: null,
       direction: null
     }
+
+    this.tiles = {
+      1: {
+        walkable: true
+      },
+      3: {
+        walkable: false
+      }
+    }
     
     // Create player
     var result = this.findObjectsByType('steveStart', this.map, 'objectsLayer')
@@ -33,9 +40,9 @@ gameObj.Game.prototype = {
     this.player = this.game.add.sprite(result[0].x, result[0].y, 'steve');
     this.game.physics.arcade.enable(this.player);
     this.player.animations.add('run');
-    this.player.anchor.setTo(0.5,0.5)
+    this.player.anchor.setTo(0.5, 0.5);
     this.player.scale.x = -1;
-    this.player.position.setTo(this.player.position.x + 16,this.player.position.y + 16);
+    this.player.position.setTo(this.player.position.x + 16, this.player.position.y + 8);
     this.game.camera.follow(this.player);
 
     // Move player with cursor keys
@@ -90,6 +97,7 @@ gameObj.Game.prototype = {
         return;
       } else {
         this.state.moving = false;
+        this.player.animations.stop('run', true);
         switch(this.state.direction) {
           case 'up':
           case 'down':
@@ -140,7 +148,7 @@ gameObj.Game.prototype = {
     } else {
       // TODO: Fix landing on non-first-frame
       // Setting TRUE should return to frame 1 when stopped
-      this.player.animations.stop(true);
+      this.player.animations.stop('run', true);
     }
   }
 }
