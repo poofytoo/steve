@@ -60,20 +60,12 @@ gameObj.Game.prototype = {
     return result;
   },
   
-  /**
-  * Takes in the world coordinates and outputs the 
-  * 
-  * @return Phaser.Tile Object
-  */
   findTileByWorldCoords: function(worldX, worldY, map, layer) {
     return map.getTile(Math.round(worldX/map.tileWidth),
       Math.round(worldY/map.tileHeight), layer);
   },
 
   validMovement: function(worldX, worldY, offsetX, offsetY) {
-    console.log(this.map.getTile(Math.round(worldX/this.map.tileWidth) + offsetX,
-      Math.round(worldY/this.map.tileHeight) + offsetY, 'Base').index == 1 || false)
-
     return this.map.getTile(Math.round(worldX/this.map.tileWidth) + offsetX,
       Math.round(worldY/this.map.tileHeight) + offsetY, 'Base').index == 1 || false;
   },
