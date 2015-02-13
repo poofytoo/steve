@@ -25,6 +25,15 @@ gameObj.Game.prototype = {
       next: null,
       direction: null
     }
+
+    this.tiles = {
+      1: {
+        walkable: true
+      },
+      3: {
+        walkable: false
+      }
+    }
     
     // Create player
     var result = this.findObjectsByType('steveStart', this.map, 'objectsLayer')
@@ -35,7 +44,7 @@ gameObj.Game.prototype = {
     this.player.animations.add('run');
     this.player.anchor.setTo(0.5,0.5)
     this.player.scale.x = -1;
-    this.player.position.setTo(this.player.position.x + 16,this.player.position.y + 16);
+    this.player.position.setTo(this.player.position.x + 16,this.player.position.y + 8);
     this.game.camera.follow(this.player);
 
     // Move player with cursor keys
