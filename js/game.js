@@ -66,9 +66,17 @@ gameObj.Game.prototype = {
   * @return Phaser.Tile Object
   */
   findTileByWorldCoords: function(worldX, worldY, map, layer) {
-    return map.getTile(Math.round(worldX/map.tileWidth),Math.round(worldY/map.tileHeight),layer);
+    return map.getTile(Math.round(worldX/map.tileWidth),
+      Math.round(worldY/map.tileHeight), layer);
   },
 
+  validMovement: function(worldX, worldY, offsetX, offsetY) {
+    console.log(this.map.getTile(Math.round(worldX/this.map.tileWidth) + offsetX,
+      Math.round(worldY/this.map.tileHeight) + offsetY, 'Base').index == 1 || false)
+
+    return this.map.getTile(Math.round(worldX/this.map.tileWidth) + offsetX,
+      Math.round(worldY/this.map.tileHeight) + offsetY, 'Base').index == 1 || false;
+  },
   /*
   //create a sprite from an object
   createFromTiledObject: function(element, group) {
@@ -97,8 +105,6 @@ gameObj.Game.prototype = {
             this.player.body.y = next - this.state.verticalOffset; break;
           case 'left':
           case 'right':
-            console.log(this.findTileByWorldCoords(this.player.body.x, this.player.body.y, this.map, 'Base').index)
-
             var next = Math.floor(Math.round(this.state.next + this.state.horizontalOffset) / this.state.step) * this.state.step;
             this.player.body.x = next - this.state.horizontalOffset; break;
         }
@@ -110,21 +116,20 @@ gameObj.Game.prototype = {
 
     // TODO: Should be switched to event listeners
 
-    if (this.cursors.up.isDown) {
+    if (this.cursors.up.isDown && this.validMovement(this.player.body.x, this.player.body.y, 0, -1)) {
       this.state.moving = true;
       this.state.direction = 'up';
       this.state.next = this.player.body.y - this.state.step;
       this.player.body.velocity.y -= this.state.velocity;
       this.player.animations.play('run', 15, true);
-
-    } else if (this.cursors.down.isDown) {
+    } else if (this.cursors.down.isDown && this.validMovement(this.player.body.x, this.player.body.y, 0, 1)) {
       this.state.moving = true;
       this.state.direction = 'down';
       this.state.next = this.player.body.y + this.state.step;
       this.player.body.velocity.y += this.state.velocity;
       this.player.animations.play('run', 15, true);
 
-    } else if (this.cursors.left.isDown) {
+    } else if (this.cursors.left.isDown && this.validMovement(this.player.body.x, this.player.body.y, -1, 0)) {
       this.state.moving = true;
       this.state.direction = 'left';
       this.state.next = this.player.body.x - this.state.step;
@@ -132,7 +137,7 @@ gameObj.Game.prototype = {
       this.player.scale.x = 1;
       this.player.animations.play('run', 15, true);
 
-    } else if (this.cursors.right.isDown) {
+    } else if (this.cursors.right.isDown  && this.validMovement(this.player.body.x, this.player.body.y, 1, 0)) {
       this.state.moving = true;
       this.state.direction = 'right';
       this.state.next = this.player.body.x + this.state.step;
