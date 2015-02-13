@@ -42,7 +42,7 @@ gameObj.Game.prototype = {
     this.player.animations.add('run');
     this.player.anchor.setTo(0.5, 0.5);
     this.player.scale.x = -1;
-    this.player.position.setTo(this.player.position.x + 16, this.player.position.y + 8);
+    this.player.position.setTo(this.player.position.x + 16, this.player.position.y + 40);
     this.game.camera.follow(this.player);
 
     // Move player with cursor keys
