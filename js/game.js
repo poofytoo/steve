@@ -9,7 +9,9 @@ gameObj.Game.prototype = {
     //create layer
     //this.backgroundlayer = this.map.createLayer('backgroundLayer');
     this.base = this.map.createLayer('Base');
+
     this.base.resizeWorld();
+    this.createItems();
     // this.map.setCollisionBetween(1, 2000, true, 'blockedLayer');
     // this.backgroundlayer.resizeWorld();
 
@@ -21,7 +23,8 @@ gameObj.Game.prototype = {
       moving: false,
       direction: null,
       next: null,
-      direction: null
+      direction: null,
+      inventory: []
     }
 
     this.tiles = {
@@ -52,6 +55,19 @@ gameObj.Game.prototype = {
     this.front = this.map.createLayer('Front');
 
   },
+
+  createItems: function() {
+    //create items
+    this.items = this.game.add.group();
+    this.items.enableBody = true;
+    var item;    
+    result = this.findObjectsByType('item', this.map, 'objectsLayer');
+    console.log(result);
+    result.forEach(function(element){
+      this.createFromTiledObject(element, this.items);
+    }, this);
+  },
+
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
   findObjectsByType: function(type, map, layer) {
     var result = new Array();
@@ -66,6 +82,16 @@ gameObj.Game.prototype = {
     });
     return result;
   },
+
+  //create a sprite from an object
+  createFromTiledObject: function(element, group) {
+    var sprite = group.create(element.x, element.y, element.properties.sprite);
+
+      //copy all properties to the sprite
+      Object.keys(element.properties).forEach(function(key){
+        sprite[key] = element.properties[key];
+      });
+  },
   
   findTileByWorldCoords: function(worldX, worldY, map, layer) {
     return map.getTile(Math.round(worldX/map.tileWidth),
@@ -75,6 +101,17 @@ gameObj.Game.prototype = {
   validMovement: function(worldX, worldY, offsetX, offsetY) {
     return this.map.getTile(Math.round(worldX/this.map.tileWidth) + offsetX,
       Math.round(worldY/this.map.tileHeight) + offsetY, 'Base').index == 1 || false;
+  },
+
+  collect: function(player, collectable) {
+    console.log("I have an ugly key");
+
+    //remove sprite
+    // collectable.destroy();
+    // console.log(collectable);
+    collectable.x = this.state.inventory.length * 32;
+    collectable.y = this.map.height * this.map.tileHeight;
+    this.state.inventory.push(collectable);
   },
   /*
   //create a sprite from an object
@@ -89,6 +126,7 @@ gameObj.Game.prototype = {
 
   update: function() {
     this.game.physics.arcade.collide(this.player, this.blockedLayer);
+    this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
     if (this.state.moving) {
       if (this.state.direction === 'up' && this.player.body.y >= this.state.next ||
           this.state.direction === 'down' && this.player.body.y <= this.state.next ||

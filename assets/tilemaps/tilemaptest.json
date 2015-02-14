@@ -50,14 +50,32 @@
                  "name":"",
                  "properties":
                     {
-                     "type":"key"
+                     "sprite":"key",
+                     "type": "item"
                     },
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":64,
+                 "x":96,
                  "y":64
+                },
+                {
+                 "ellipse":true,
+                 "height":32,
+                 "id":29,
+                 "name":"",
+                 "properties":
+                    {
+                     "sprite":"key",
+                     "type": "item"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":128,
+                 "y":96
                 }],
          "opacity":1,
          "type":"objectgroup",
