@@ -7,13 +7,9 @@ gameObj.Game.prototype = {
     this.map.addTilesetImage('test-tile', 'gameTiles');
     
     //create layer
-    //this.backgroundlayer = this.map.createLayer('backgroundLayer');
     this.base = this.map.createLayer('Base');
-
     this.base.resizeWorld();
     this.createItems();
-    // this.map.setCollisionBetween(1, 2000, true, 'blockedLayer');
-    // this.backgroundlayer.resizeWorld();
 
     this.state = {
       verticalOffset: 12,
@@ -104,25 +100,11 @@ gameObj.Game.prototype = {
   },
 
   collect: function(player, collectable) {
-    console.log("I have an ugly key");
-
-    //remove sprite
-    // collectable.destroy();
-    // console.log(collectable);
+    // remove sprite
     collectable.x = this.state.inventory.length * 32;
     collectable.y = this.map.height * this.map.tileHeight;
     this.state.inventory.push(collectable);
   },
-  /*
-  //create a sprite from an object
-  createFromTiledObject: function(element, group) {
-    var sprite = group.create(element.x, element.y, element.properties.sprite);
-      //copy all properties to the sprite
-      Object.keys(element.properties).forEach(function(key){
-        sprite[key] = element.properties[key];
-      });
-  },
-  */
 
   update: function() {
     this.game.physics.arcade.collide(this.player, this.blockedLayer);
